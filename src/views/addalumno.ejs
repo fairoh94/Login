@@ -1,0 +1,85 @@
+<%- layout('layouts/main.ejs') %>
+
+<script>
+  // Función para convertir el texto a mayúsculas
+  function convertirAMayusculas(elemento) {
+    elemento.value = elemento.value.toUpperCase();
+  }
+</script>
+
+<title>Agregar Alumno</title>
+
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <div class="card mt-4 text-center">
+      <div class="card-header">
+        <h3>Añadir Alumno</h3>
+      </div>
+      <div class="card-body">
+        <form action="/addalumno" method="POST">
+          <div class="form-group">
+            <h6>Campos con * son REQUERIDOS</h6>
+            <br></br>
+            <label for="nombre">Nombre *</label>
+            <input type="text" name="nombre" placeholder="Inserta un Nombre" class="form-control" required onkeyup="convertirAMayusculas(this)">
+          </div>
+          <div class="form-group">
+            <label for="apellidoPaterno">Apellido Paterno *</label>
+            <input type="text" name="apellidoPaterno" placeholder="Inserta el Apellido Paterno" class="form-control" required onkeyup="convertirAMayusculas(this)">
+          </div>
+          <div class="form-group">
+            <label for="apellidoMaterno">Apellido Materno *</label>
+            <input type="text" name="apellidoMaterno" placeholder="Inserta el Apellido Materno" class="form-control" required onkeyup="convertirAMayusculas(this)">
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha de Nacimiento *</label>
+            <input type="date" name="fechaNacimiento" class="form-control" max="2025-01-01" required>
+          </div>                  
+          <div class="form-group">
+            <label for="carrera">Carrera *</label>
+            <select name="carrera" class="form-control" required>
+              <% carreras.forEach(carrera => { %>
+                <option value="<%= carrera._id %>"><%= carrera.descripcion %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="estatus">Estatus *</label>
+            <select name="estatus" class="form-control" required>
+              <option value="INSCRITO">INSCRITO</option>
+              <option value="NO INSCRITO">NO INSCRITO</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Inserta un Email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="text" name="telefono" placeholder="Inserta un Teléfono" class="form-control" onkeyup="convertirAMayusculas(this)">
+          </div>
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" name="direccion" placeholder="Inserta una Dirección" class="form-control" onkeyup="convertirAMayusculas(this)">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block mt-4">
+            Enviar
+          </button>
+        </form>
+      </div>
+    </div>
+    <button onclick="redirectToProfile()" class="btn btn-primary mt-4 float-right">
+      Volver
+  </button>    
+  <br></br>
+  </div>
+  <br></br>
+
+  <script>
+    // Función para redirigir al perfil
+    function redirectToProfile() {
+      window.location.href = "/profile";
+    }
+  </script>
+
+  

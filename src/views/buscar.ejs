@@ -1,0 +1,107 @@
+<%- layout('layouts/main.ejs') %>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados de búsqueda</title>
+  <style>
+    th {
+        background-color: #f2f2f2;
+    }
+
+    button {
+    background-color: #ff4f4f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #ff3333;
+  }
+
+  .edit-button {
+    background-color: #4286f4;
+  }
+
+  .edit-button:hover {
+    background-color: #3366cc;
+  }
+
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <br></br>
+    <h1>Resultados de búsqueda</h1>
+    <h2>Alumnos encontrados:</h2>
+    <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido Paterno</th>
+            <th>Apellido Materno</th>
+            <th>Carrera</th>
+            <th>Estatus</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% alumnos.forEach(alumno => { %>
+          <tr>
+            <td><%= alumno.nombre %></td>
+            <td><%= alumno.apellidoPaterno %></td>
+            <td><%= alumno.apellidoMaterno %></td>
+            <td>
+              
+              <% if (alumno.carrera) { %>
+                <%= alumno.carrera.descripcion %>
+              <% } else { %>
+                NO ASIGNADA
+              <% } %>                      
+
+
+            </td>
+            <td><%= alumno.estatus %></td> <!-- Datos de estatus del alumno -->
+            <td>        
+              <form action="/editalumno/<%= alumno._id %>" method="GET">
+                <button type="submit" class="edit-button">Editar</button>
+              </form>
+            </td>
+            <td>
+              <form action="/deletealumno" method="POST">
+                <input type="hidden" name="alumnoId" value="<%= alumno._id %>">
+                <button type="submit">Eliminar</button>
+              </form>        
+            </td>
+          
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>      
+  </div>
+</body>
+
+<div class="button-container">
+  <button onclick="redirectToProfile()" class="btn btn-primary mt-4 float-right">
+    Volver
+  </button>
+</div>   
+
+<script>
+  // Función para redirigir al perfil
+  function redirectToProfile() {
+    window.location.href = "/consultaralumno";
+  }
+</script>
+
+</html>

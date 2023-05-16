@@ -1,0 +1,162 @@
+<%- layout('layouts/main.ejs') %>
+
+<title>Consultar Alumno</title>
+
+<script>
+  // Función para convertir el texto a mayúsculas
+  function convertirAMayusculas(elemento) {
+    elemento.value = elemento.value.toUpperCase();
+  }
+
+</script>
+
+<style>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  form {
+    display: inline-block;
+  }
+
+  button {
+    background-color: #ff4f4f;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #ff3333;
+  }
+
+  .edit-button {
+    background-color: #4286f4;
+  }
+
+  .edit-button:hover {
+    background-color: #3366cc;
+  }
+
+  .search-button {
+    background-color: #4caf50;
+  }
+
+  .search-button:hover {
+    background-color: #45a049;
+  }
+</style>
+
+<table>
+
+  <form action="/buscar" method="POST">
+    <br></br>
+    <h1>consultar Alumno</h1>
+    <br></br>
+    <input type="text" name="nombre" placeholder="Nombre" onkeyup="convertirAMayusculas(this)">
+    <input type="text" name="apellidoPaterno" placeholder="Apellido Paterno" onkeyup="convertirAMayusculas(this)">
+    <input type="text" name="apellidoMaterno" placeholder="Apellido Materno" onkeyup="convertirAMayusculas(this)">
+    <select name="carrera" class="form-control">
+      <option value="">Todas las Carreras</option>
+      <% carreras.forEach(carrera => { %>
+        <option value="<%= carrera._id %>"><%= carrera.descripcion %></option>
+      <% }) %>
+    </select>
+    <select name="estatus" class="form-control">
+      <option value="">Todos los estados</option>
+      <option value="INSCRITO">INSCRITO</option>
+      <option value="NO INSCRITO">NO INSCRITO</option>
+    </select>
+    <button type="submit" class="search-button">Buscar</button>
+  </form>  
+  <br></br>
+  
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido Paterno</th>
+      <th>Apellido Materno</th>
+      <th>Fecha de Nacimiento</th>
+      <th>Carrera</th>
+      <th>Estatus</th>
+      <th>Email</th>
+      <th>Teléfono</th>
+      <th>Dirección</th>
+      <th>Editar</th>
+      <th>Eliminar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% alumnos.forEach(alumno => { %>
+    <tr>
+      <td><%= alumno.nombre %></td>
+      <td><%= alumno.apellidoPaterno %></td>
+      <td><%= alumno.apellidoMaterno %></td>
+      <td><%= alumno.fechaNacimiento.toISOString().slice(0, 10) %></td>
+      <td>
+        
+        <% carreras.forEach(carrera => { %>
+          <% if (alumno.carrera && carrera._id.toString() === alumno.carrera.toString()) { %>
+            <%= carrera.descripcion %>
+          <% } %>
+        <% }) %>
+        <% if (!alumno.carrera) { %>
+          NO ASIGNADA
+        <% } %>
+              
+      
+      </td> 
+
+
+      <td><%= alumno.estatus %></td>
+      <td><%= alumno.email %></td>
+      <td><%= alumno.telefono %></td>
+      <td><%= alumno.direccion %></td>  
+      <td>        
+        <form action="/editalumno/<%= alumno._id %>" method="GET">
+          <button type="submit" class="edit-button">Editar</button>
+        </form>
+        
+      </td>
+      <td>
+        <form action="/deletealumno" method="POST">
+          <input type="hidden" name="alumnoId" value="<%= alumno._id %>">
+          <button type="submit">Eliminar</button>
+        </form>        
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+
+  
+</table>
+
+<div class="button-container">
+  <button onclick="redirectToProfile()" class="btn btn-primary mt-4 float-right">
+    Volver
+  </button>
+</div>   
+
+<script>
+  // Función para redirigir al perfil
+  function redirectToProfile() {
+    window.location.href = "/profile";
+  }
+</script>
